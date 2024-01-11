@@ -13,7 +13,7 @@ var isauthorised = false;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-function chkpassword(req, res, next) {
+function checkpassword(req, res, next) {
   const pass = req.body["password"];
   if (pass === "ILoveProgramming") {
     isauthorised = true;
@@ -21,7 +21,7 @@ function chkpassword(req, res, next) {
   next();
 }
 
-app.use(chkpassword);
+app.use(checkpassword);
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
