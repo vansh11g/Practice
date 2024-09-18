@@ -1,6 +1,3 @@
-//To see how the final website should work, run "node solution.js".
-//Make sure you have installed all the dependencies with "npm i".
-//The password is ILoveProgramming
 import express from "express";
 import bodyParser from "body-parser";
 import { dirname } from "path";
@@ -9,26 +6,27 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
-var isauthorised = false;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 function checkpassword(req, res, next) {
   const pass = req.body["password"];
   if (pass === "ILoveProgramming") {
-    isauthorised = true;
+    req.isauthorised = true; // Set a property on the request object instead
+  } else {
+    req.isauthorised = false; // Explicitly set false if the password is incorrect
   }
   next();
 }
 
-app.use(checkpassword);
-
+// Serve the index.html file at the root
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-app.post("/check", (req, res) => {
-  if (isauthorised == true) {
+// Apply the middleware only to the "/check" route
+app.post("/check", checkpassword, (req, res) => {
+  if (req.isauthorised) {
     res.sendFile(__dirname + "/public/secret.html");
   } else {
     res.sendFile(__dirname + "/public/index.html");
