@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
+// just for github check
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
